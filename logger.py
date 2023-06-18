@@ -49,8 +49,8 @@ def print_data():
 
 
 def change_line(dataFile, numberRow,numberFile):
-    answer=int(input(f"Изменяем данную запись? \n {dataFile[numberRow]}\n Введите ответ (да\нет)"))
-    while answer !="да":
+    answer=input(f"Изменяем данную запись {dataFile[numberRow]}? Введите ответ (да\нет)")
+    while answer !='да':
         numberRow=int(input("Введите номер записи"))-1
     print(f"Меняем запись\n {dataFile[numberRow]}\n")
     if numberFile==1:
