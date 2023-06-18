@@ -33,7 +33,6 @@ def print_data():
     with open('data_first_variant.csv', 'r', encoding='utf-8') as file:
         data_first = file.readlines()
         data_first_version_second = []
-        data_middle = ''
         j = 0
         for i in range(len(data_first)):
             if data_first[i] == '\n' or i == len(data_first) - 1:
@@ -90,16 +89,16 @@ def change_line(dataFile, numberRow,numberFile):
     if numberFile==1:
         data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']+dataFile[numberRow+1:]
         if numberRow+1==len(dataFile):
-            data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']
+            data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}\n']
         with open('data_first_variant.csv','w',encoding='utf-8') as file:
-            file.write(' '.join(data_first))
+            file.write(''.join(data_first))
         print("Изменения внесены")
     else:
         data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}']+dataFile[numberRow+1:]
         if numberRow+1==len(dataFile):
-            data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n\n']
+            data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n']
         with open('data_second_variant.csv','w',encoding='utf-8') as file:
-            file.write(' '.join(data_second))
+            file.write(''.join(data_second))
         print("Изменения внесены")
 
 
@@ -115,13 +114,11 @@ def put_data():
 
     if number_file == 1:  # Можно сделать нумерацию внутри файла
         print("Какую именно запись по счету Вы хотите изменить?")
-        number_journal = int(input('Введите номер записи: '))
-        number_journal -= 1
+        number_journal = int(input('Введите номер записи: '))-1
         change_line(data_first,number_journal,1)
     else:
         print("Какую именно запись по счету Вы хотите изменить?")
-        number_journal = int(input('Введите номер записи: '))
-        number_journal -= 1
+        number_journal = int(input('Введите номер записи: '))-1
         change_line(data_second,number_journal,2)
 
 
@@ -163,14 +160,14 @@ def delete_line(dataFile, numberRow,numberFile):
         if numberRow+1==len(dataFile):
             data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']
         with open('data_first_variant.csv','w',encoding='utf-8') as file:
-            file.write(' '.join(data_first))
+            file.write(''.join(data_first))
         print("Изменения внесены")
     else:
         data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}']+dataFile[numberRow+1:]
         if numberRow+1==len(dataFile):
             data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n']
         with open('data_second_variant.csv','w',encoding='utf-8') as file:
-            file.write(' '.join(data_second))
+            file.write(''.join(data_second))
         print("Изменения внесены")
 
 
@@ -186,8 +183,8 @@ def delete_data():
 
     if number_file == 1:
         print("Какую именно запись по счету Вы хотите удалить?")
-        number_journal = int(input('Введите номер записи: '))
-        answer=input(f'Удалить данную запись полностью?\n{data_first[number_journal - 1]}')
+        number_journal = int(input('Введите номер записи: '))-1
+        answer=input(f'Удалить данную запись полностью?\n{data_first[number_journal]}')
         if answer=='да':
             data_first = data_first[:number_journal] + data_first[number_journal + 1:]
             with open('data_first_variant.csv', 'w', encoding='utf-8') as file:
@@ -197,10 +194,10 @@ def delete_data():
             delete_line(data_first, number_journal,1)
     else:
         print("Какую именно запись по счету Вы хотите удалить?")
-        number_journal = int(input('Введите номер записи: '))
-        answer=input(f'Удалить данную запись полностью?\n{data_second[number_journal - 1]}')
+        number_journal = int(input('Введите номер записи: '))-1
+        answer=input(f'Удалить данную запись полностью?\n{data_second[number_journal]}')
         if answer=='да':
-            data_second = data_second[:number_journal] + data_second[number_journal + 1:]
+            data_second = data_second[:number_journal] + data_second[number_journal+1:]
             with open('data_second_variant.csv', 'w', encoding='utf-8') as file:
                 file.write(''.join(data_second))
             print('Изменения успешно сохранены!')
