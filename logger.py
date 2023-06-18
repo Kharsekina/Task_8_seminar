@@ -25,7 +25,7 @@ def input_data():
             file.write(f'{name}\n{surname}\n{phone}\n{address}\n\n')
     else:
         with open('data_second_variant.csv', 'a', encoding='utf-8') as file:
-            file.write(f'{name};{surname};{phone};{address}\n\n')
+            file.write(f'{name};{surname};{phone};{address}\n')
 
 
 def print_data():
@@ -49,10 +49,12 @@ def print_data():
 
 
 def change_line(dataFile, numberRow,numberFile):
-    answer=input(f"Изменяем данную запись {dataFile[numberRow]}? Введите ответ (да\нет)")
-    while answer !='да':
-        numberRow=int(input("Введите номер записи"))-1
-    print(f"Меняем запись\n {dataFile[numberRow]}\n")
+    answer=input(f"Изменяем данную запись?\n{dataFile[numberRow]}\nВведите ответ (да\нет)")
+    if answer != 'да':
+        numberRow=int(input("Введите номер записи: "))-1
+
+
+    print(f"Меняем запись\n{dataFile[numberRow]}\n")
     if numberFile==1:
         name=dataFile[numberRow].split('\n')[0]
         surname=dataFile[numberRow].split('\n')[1]
@@ -95,7 +97,7 @@ def change_line(dataFile, numberRow,numberFile):
     else:
         data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}']+dataFile[numberRow+1:]
         if numberRow+1==len(dataFile):
-            data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n']
+            data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n\n']
         with open('data_second_variant.csv','w',encoding='utf-8') as file:
             file.write(' '.join(data_second))
         print("Изменения внесены")
@@ -123,6 +125,56 @@ def put_data():
         change_line(data_second,number_journal,2)
 
 
+def delete_line(dataFile, numberRow,numberFile):
+    if numberFile==1:
+        name=dataFile[numberRow].split('\n')[0]
+        surname=dataFile[numberRow].split('\n')[1]
+        phone=dataFile[numberRow].split('\n')[2]
+        address=dataFile[numberRow].split('\n')[3]
+    if numberFile==2:
+        name=dataFile[numberRow].split(';')[0]
+        surname=dataFile[numberRow].split(';')[1]
+        phone=dataFile[numberRow].split(';')[2]
+        address=dataFile[numberRow].split(';')[3]
+    answer=int(input(f"Какие данные вы хотите удалить?\n"
+                     f"1 Имя\n"
+                     f"2 Фамилия\n"
+                     f"3 Номер телефона\n"
+                     f"4 Адрес\n"
+                     f"Введите ответ: "))
+    while answer<1 or answer>4:
+        print("Введен неправильный номер, выберите номер от 1 до 4: ")
+        answer=int(input(f"Какие данные вы хотите удалить?\n"
+                     f"1 Имя\n"
+                     f"2 Фамилия\n"
+                     f"3 Номер телефона\n"
+                     f"4 Адрес\n"
+                     f"Введите ответ: "))
+    if answer==1:
+        name=None
+    elif answer==2:
+        surname=None
+    elif answer==3:
+        phone=None
+    elif answer==4:
+        address=None
+    if numberFile==1:
+        data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']+dataFile[numberRow+1:]
+        if numberRow+1==len(dataFile):
+            data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']
+        with open('data_first_variant.csv','w',encoding='utf-8') as file:
+            file.write(' '.join(data_first))
+        print("Изменения внесены")
+    else:
+        data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}']+dataFile[numberRow+1:]
+        if numberRow+1==len(dataFile):
+            data_second=dataFile[:numberRow]+[f'{name};{surname};{phone};{address}\n']
+        with open('data_second_variant.csv','w',encoding='utf-8') as file:
+            file.write(' '.join(data_second))
+        print("Изменения внесены")
+
+
+
 def delete_data():
     print('Из какого файла Вы хотите удалить данные?')
     data_first, data_second = print_data()
@@ -132,21 +184,25 @@ def delete_data():
         print('Ты дурак?! Даю тебе последний шанс')
         number_file = int(input('Введите номер файла: '))
 
-    if number_file == 1:  # Можно сделать нумерацию внутри файла
+    if number_file == 1:
         print("Какую именно запись по счету Вы хотите удалить?")
         number_journal = int(input('Введите номер записи: '))
-        # Можно добавить проверку, чтобы человек не выходил за пределы записи
-        print(f'Удалить данную запись\n{data_first[number_journal - 1]}')
-        data_first = data_first[:number_journal] + data_first[number_journal + 1:]
-        with open('data_first_variant.csv', 'w', encoding='utf-8') as file:
-            file.write(''.join(data_first))
-        print('Изменения успешно сохранены!')
+        answer=input(f'Удалить данную запись полностью?\n{data_first[number_journal - 1]}')
+        if answer=='да':
+            data_first = data_first[:number_journal] + data_first[number_journal + 1:]
+            with open('data_first_variant.csv', 'w', encoding='utf-8') as file:
+                file.write(''.join(data_first))
+            print('Изменения успешно сохранены!')
+        else:
+            delete_line(data_first, number_journal,1)
     else:
         print("Какую именно запись по счету Вы хотите удалить?")
         number_journal = int(input('Введите номер записи: '))
-        # Можно добавить проверку, чтобы человек не выходил за пределы записи
-        print(f'Удалить данную запись\n{data_second[number_journal - 1]}')
-        data_second = data_second[:number_journal] + data_second[number_journal + 1:]
-        with open('data_second_variant.csv', 'w', encoding='utf-8') as file:
-            file.write(''.join(data_second))
-        print('Изменения успешно сохранены!')  # Можно вывести конечные данные
+        answer=input(f'Удалить данную запись полностью?\n{data_second[number_journal - 1]}')
+        if answer=='да':
+            data_second = data_second[:number_journal] + data_second[number_journal + 1:]
+            with open('data_second_variant.csv', 'w', encoding='utf-8') as file:
+                file.write(''.join(data_second))
+            print('Изменения успешно сохранены!')
+        else:
+            delete_line(data_second, number_journal,2)
