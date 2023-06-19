@@ -158,7 +158,7 @@ def delete_line(dataFile, numberRow,numberFile):
     if numberFile==1:
         data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']+dataFile[numberRow+1:]
         if numberRow+1==len(dataFile):
-            data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}']
+            data_first=dataFile[:numberRow]+[f'{name}\n{surname}\n{phone}\n{address}\n']
         with open('data_first_variant.csv','w',encoding='utf-8') as file:
             file.write(''.join(data_first))
         print("Изменения внесены")
